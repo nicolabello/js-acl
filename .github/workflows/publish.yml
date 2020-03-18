@@ -3,10 +3,10 @@ name: Publish
 on:
   pull_request:
     branches:
-      - stable
+      - master
   push:
     branches:
-      - stable
+      - master
 
 jobs:
   build:
