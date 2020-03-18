@@ -6,13 +6,16 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc",
+    "start": "yarn build && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/nicolabello/js-acl"
   },
-  "keywords": ["acl"],
+  "keywords": [
+    "acl"
+  ],
   "author": "Nicola Bello <nicola.bello.3@gmail.com>",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
