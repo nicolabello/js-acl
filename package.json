@@ -5,9 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "lint": "eslint ./src --ext .ts",
     "build": "rimraf ./dist && tsc",
     "start": "yarn build && node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,14 @@
   "author": "Nicola Bello <nicola.bello.3@gmail.com>",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@types/jest": "^25.1.4",
     "@types/node": "^13.9.1",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.1.0",
     "rimraf": "^3.0.2",
+    "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
   }
 }
