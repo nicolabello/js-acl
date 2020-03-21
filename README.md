@@ -10,13 +10,13 @@ Inspired by [Zend ACL](https://framework.zend.com/manual/2.4/en/modules/zend.per
 
 Using **npm**
 
-```Bash
+```bash
 npm install @nicolabello/js-acl
 ```
 
 Using **yarn**
 
-```Bash
+```bash
 yarn add @nicolabello/js-acl
 ```
 
@@ -24,13 +24,13 @@ yarn add @nicolabello/js-acl
 
 Using _import_ (ES6 way, e.g. **Angular**, **React**)
 
-```Javascript
+```js
 import {Acl} from "@nicolabello/js-acl";
 ```
 
 Using _require_ (CommonJS way, e.g. **Node.js**)
 
-```Javascript
+```js
 const {Acl} = require('@nicolabello/js-acl');
 ```
 
@@ -38,7 +38,7 @@ const {Acl} = require('@nicolabello/js-acl');
 
 Create a new ACL
 
-```Javascript
+```js
 const acl = new Acl();
 ```
 
@@ -52,7 +52,7 @@ Add the **roles** respecting the following tree
     └── admin
 ```
 
-```Javascript
+```js
 acl.addRole('guest');
 acl.addRole('authenticated');
 acl.addRole('editor', 'authenticated');
@@ -69,7 +69,7 @@ Add the **resources** respecting the following tree
         └── created-articles
 ```
 
-```Javascript
+```js
 acl.addResource('restricted-area');
 acl.addResource('admin-area', 'restricted-area');
 acl.addResource('articles', 'restricted-area');
@@ -78,7 +78,7 @@ acl.addResource('created-articles', 'articles');
 
 Allow/deny privileges
 
-```Javascript
+```js
 // Authenticated users can navigate to restricted area
 acl.allow('authenticated', 'restricted-area', 'navigate');
 
@@ -97,7 +97,7 @@ acl.deny('authenticated', 'created-articles', 'like');
 ```
 
 Check privileges
-```Javascript
+```js
 acl.isAllowed('authenticated', 'restricted-area', 'navigate'); // true
 acl.isAllowed('editor', 'restricted-area', 'navigate'); // true
 
