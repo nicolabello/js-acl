@@ -1,7 +1,1 @@
-export class Acl {
-
-    public init() {
-        console.log('Hello world!');
-    }
-
-}
+export * from './main/acl';
