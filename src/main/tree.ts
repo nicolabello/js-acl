@@ -4,20 +4,20 @@ export class Tree<T> {
 
     protected nodes: TreeNode<T>[] = [];
 
-    public find(data: T): TreeNode<T> | undefined {
-        return this.nodes.find(node => node.data === data);
+    public find(id: T): TreeNode<T> | undefined {
+        return this.nodes.find(node => node.id === id);
     }
 
-    public push(data: T, parentData?: T): TreeNode<T> | undefined {
+    public push(id: T, parentData?: T): TreeNode<T> | undefined {
 
-        let node = this.find(data);
+        let node = this.find(id);
 
         if (node) {
             return node;
         }
 
         node = {
-            data: data
+            id: id
         };
 
         if (parentData !== null && typeof parentData !== 'undefined') {

@@ -1,4 +1,4 @@
 export interface TreeNode<T> {
-    data: T;
+    id: T;
     parent?: TreeNode<T>;
 }

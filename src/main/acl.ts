@@ -14,16 +14,8 @@ export class Acl<Role = string, Resource = string, Privilege = string> {
         return !!this.roles.push(role, parent);
     }
 
-    public addRoles(roles: Role[], parentRole?: Role): boolean[] {
-        return roles.map(roleId => this.addRole(roleId, parentRole));
-    }
-
     public addResource(resource: Resource, parent?: Resource): boolean {
         return !!this.resources.push(resource, parent);
-    }
-
-    public addResources(resources: Resource[], parentResource?: Resource): boolean[] {
-        return resources.map(resourceId => this.addResource(resourceId, parentResource));
     }
 
     public allow(role: Role | Role[], resource: Resource | Resource[], privilege: Privilege | Privilege[]): void {
@@ -40,27 +32,37 @@ export class Acl<Role = string, Resource = string, Privilege = string> {
         const resourceNode = this.resources.find(resource);
 
         if (roleNode && resourceNode) {
-            return this.getModifier(roleNode, resourceNode, privilege) === Modifier.Allow
+            return this.getRoleBranchModifier(roleNode, resourceNode, privilege) === Modifier.Allow
         }
 
         return false;
 
     }
 
-    private getModifier(roleNode: TreeNode<Role>, resourceNode: TreeNode<Resource>, privilege: Privilege): Modifier | undefined {
+    private getResourceBranchModifier(roleNode: TreeNode<Role>, resourceNode: TreeNode<Resource>, privilege: Privilege): Modifier | undefined {
 
-        const modifier = this.privileges.getModifier(roleNode.data, resourceNode.data, privilege);
+        const modifier = this.privileges.getModifier(roleNode.id, resourceNode.id, privilege);
 
         if (modifier === Modifier.Allow || modifier === Modifier.Deny) {
             return modifier;
         }
 
         if (resourceNode.parent) {
-            return this.getModifier(roleNode, resourceNode.parent, privilege);
+            return this.getResourceBranchModifier(roleNode, resourceNode.parent, privilege);
+        }
+
+    }
+
+    private getRoleBranchModifier(roleNode: TreeNode<Role>, resourceNode: TreeNode<Resource>, privilege: Privilege): Modifier | undefined {
+
+        const modifier = this.getResourceBranchModifier(roleNode, resourceNode, privilege);
+
+        if (modifier === Modifier.Allow || modifier === Modifier.Deny) {
+            return modifier;
         }
 
         if (roleNode.parent) {
-            return this.getModifier(roleNode.parent, resourceNode, privilege);
+            return this.getRoleBranchModifier(roleNode.parent, resourceNode, privilege);
         }
 
     }
