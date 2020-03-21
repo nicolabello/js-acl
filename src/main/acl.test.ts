@@ -112,3 +112,49 @@ test('Deny child resources and roles of denied parents', () => {
     acl.addRole('child-user', Roles.User);
     expect(acl.isAllowed('child-user', Resources.ArticlesOwned, 'view')).toBeFalsy();
 });
+
+test('Readme examples', () => {
+
+    const acl = new Acl();
+
+    acl.addRole('guest');
+    acl.addRole('authenticated');
+    acl.addRole('editor', 'authenticated');
+    acl.addRole('admin', 'authenticated');
+
+    acl.addResource('restricted-area');
+    acl.addResource('admin-area', 'restricted-area');
+    acl.addResource('articles', 'restricted-area');
+    acl.addResource('created-articles', 'articles');
+
+    // Authenticated users can navigate to restricted area
+    acl.allow('authenticated', 'restricted-area', 'navigate');
+
+    // Admin only can navigate to admin area
+    acl.deny('authenticated', 'admin-area', 'navigate');
+    acl.allow('admin', 'admin-area', 'navigate');
+
+    // Editors can add articles and edit their own
+    acl.allow('editor', 'articles', 'add');
+    acl.allow('editor', 'created-articles', 'edit');
+
+    // Authenticated users can like all articles,
+    // but they can't like their own articles
+    acl.allow('authenticated', 'articles', 'like');
+    acl.deny('authenticated', 'created-articles', 'like');
+
+    expect(acl.isAllowed('authenticated', 'restricted-area', 'navigate')).toBeTruthy();
+    expect(acl.isAllowed('editor', 'restricted-area', 'navigate')).toBeTruthy();
+
+    expect(acl.isAllowed('authenticated', 'admin-area', 'navigate')).toBeFalsy();
+    expect(acl.isAllowed('admin', 'admin-area', 'navigate')).toBeTruthy();
+    expect(acl.isAllowed('editor', 'admin-area', 'navigate')).toBeFalsy();
+
+    expect(acl.isAllowed('authenticated', 'articles', 'add')).toBeFalsy();
+    expect(acl.isAllowed('editor', 'articles', 'add')).toBeTruthy();
+
+    expect(acl.isAllowed('authenticated', 'articles', 'like')).toBeTruthy();
+    expect(acl.isAllowed('authenticated', 'created-articles', 'like')).toBeFalsy();
+    expect(acl.isAllowed('editor', 'created-articles', 'like')).toBeFalsy();
+
+});
