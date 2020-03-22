@@ -51,7 +51,7 @@ test('Deny nonexistent role', () => {
 
 test('Deny nonexistent resource', () => {
     const acl = getDefaultAcl();
-    expect(acl.isAllowed(Roles.User, Resources.Articles, 'view')).toBeFalsy();
+    expect(acl.isAllowed(Roles.User, 'nonexistent', 'view')).toBeFalsy();
 });
 
 test('Deny nonexistent privilege', () => {
@@ -111,6 +111,67 @@ test('Deny child resources and roles of denied parents', () => {
     acl.deny(Roles.User, Resources.Articles, 'view');
     acl.addRole('child-user', Roles.User);
     expect(acl.isAllowed('child-user', Resources.ArticlesOwned, 'view')).toBeFalsy();
+});
+
+test('Allow all', () => {
+    const acl = getDefaultAcl();
+    acl.allow(null, null);
+    expect(acl.isAllowed(null, null)).toBeTruthy();
+    expect(acl.isAllowed(Roles.User, null)).toBeTruthy();
+    expect(acl.isAllowed(Roles.User, Resources.Articles)).toBeTruthy();
+    expect(acl.isAllowed(Roles.User, Resources.Articles, 'view')).toBeTruthy();
+});
+
+test('Deny nonexistent role', () => {
+    const acl = getDefaultAcl();
+    acl.allow(null, null);
+    expect(acl.isAllowed('nonexistent', Resources.Articles, 'view')).toBeFalsy();
+});
+
+test('Deny nonexistent resource', () => {
+    const acl = getDefaultAcl();
+    acl.allow(null, null);
+    expect(acl.isAllowed(Roles.User, 'nonexistent', 'view')).toBeFalsy();
+});
+
+test('Allow nonexistent privilege', () => {
+    const acl = getDefaultAcl();
+    acl.allow(null, null);
+    expect(acl.isAllowed(Roles.User, Resources.Articles, 'nonexistent')).toBeTruthy();
+});
+
+test('Allow any resource and privilege on specific role', () => {
+    const acl = getDefaultAcl();
+    acl.allow(Roles.Authenticated, null);
+    expect(acl.isAllowed(Roles.Authenticated, null)).toBeTruthy();
+    expect(acl.isAllowed(Roles.Authenticated, Resources.AdminArea, 'view')).toBeTruthy();
+});
+
+test('Allow any resource and privilege on child role', () => {
+    const acl = getDefaultAcl();
+    acl.allow(Roles.Authenticated, null);
+    expect(acl.isAllowed(Roles.User, null)).toBeTruthy();
+    expect(acl.isAllowed(Roles.User, Resources.AdminArea, 'view')).toBeTruthy();
+});
+
+test('Deny a specific resource', () => {
+    const acl = getDefaultAcl();
+    acl.allow(Roles.Authenticated, null);
+    acl.deny(Roles.Authenticated, Resources.AdminArea);
+    expect(acl.isAllowed(Roles.Authenticated, Resources.Articles)).toBeTruthy();
+    expect(acl.isAllowed(Roles.User, Resources.Articles)).toBeTruthy();
+    expect(acl.isAllowed(Roles.Authenticated, Resources.AdminArea)).toBeFalsy();
+    expect(acl.isAllowed(Roles.User, Resources.AdminArea)).toBeFalsy();
+});
+
+test('Deny a specific privilege', () => {
+    const acl = getDefaultAcl();
+    acl.allow(Roles.Authenticated, Resources.Articles);
+    acl.deny(Roles.Authenticated, Resources.Articles, 'delete');
+    expect(acl.isAllowed(Roles.Authenticated, Resources.Articles, 'view')).toBeTruthy();
+    expect(acl.isAllowed(Roles.User, Resources.Articles, 'view')).toBeTruthy();
+    expect(acl.isAllowed(Roles.Authenticated, Resources.Articles, 'delete')).toBeFalsy();
+    expect(acl.isAllowed(Roles.User, Resources.Articles, 'delete')).toBeFalsy();
 });
 
 test('Readme examples', () => {

@@ -4,16 +4,16 @@ export enum Modifier {
 }
 
 export interface PrivilegeModifier<Privilege> {
-    privilege: Privilege;
+    privilege: Privilege | null;
     modifier?: Modifier;
 }
 
 export interface ResourcePrivileges<Resource, Privilege> {
-    resource: Resource;
+    resource: Resource | null;
     privileges: PrivilegeModifier<Privilege>[];
 }
 
 export interface RoleResources<Role, Resource, Privilege> {
-    role: Role;
+    role: Role | null;
     resources: ResourcePrivileges<Resource, Privilege>[];
 }

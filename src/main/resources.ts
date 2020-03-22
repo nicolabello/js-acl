@@ -1,4 +1,4 @@
 import {Tree} from "./tree";
 
-export class Resources<T = string> extends Tree<T> {
+export class Resources<Resource> extends Tree<Resource> {
 }

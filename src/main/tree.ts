@@ -4,11 +4,11 @@ export class Tree<T> {
 
     protected nodes: TreeNode<T>[] = [];
 
-    public find(id: T): TreeNode<T> | undefined {
+    public find(id: T | null): TreeNode<T> | undefined {
         return this.nodes.find(node => node.id === id);
     }
 
-    public push(id: T, parentData?: T): TreeNode<T> | undefined {
+    public push(id: T, parentId?: T): TreeNode<T> | undefined {
 
         let node = this.find(id);
 
@@ -20,9 +20,9 @@ export class Tree<T> {
             id: id
         };
 
-        if (parentData !== null && typeof parentData !== 'undefined') {
+        if (parentId !== null && typeof parentId !== 'undefined') {
 
-            const parentNode = this.find(parentData as T);
+            const parentNode = this.find(parentId as T);
 
             if (parentNode) {
                 node.parent = parentNode;
@@ -34,6 +34,19 @@ export class Tree<T> {
 
         }
 
+        let parentNode = this.find(null);
+
+        if(!parentNode) {
+
+            parentNode = {
+                id: null
+            };
+
+            this.nodes.push(parentNode);
+
+        }
+
+        node.parent = parentNode;
         this.nodes.push(node);
         return node;
 
