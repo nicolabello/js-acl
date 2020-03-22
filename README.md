@@ -43,10 +43,10 @@ const acl = new Acl();
 Add the **roles** to match the following structure
 
 ```
-├── guest
-└── authenticated
-    ├── editor
-    └── admin
+guest
+authenticated
+├── editor
+└── admin
 ```
 
 ```js
@@ -59,10 +59,10 @@ acl.addRole('admin', 'authenticated');
 Add the **resources** to match the following structure
 
 ```
-└── restricted-area
-    ├── admin-area
-    └── articles
-        └── created-articles
+restricted-area
+├── admin-area
+└── articles
+    └── created-articles
 ```
 
 ```js
@@ -92,7 +92,7 @@ acl.allow('authenticated', 'articles', 'like');
 acl.deny('authenticated', 'created-articles', 'like');
 ```
 
-Check privileges
+Query privileges
 
 ```js
 acl.isAllowed('authenticated', 'restricted-area', 'navigate'); // true
@@ -112,13 +112,13 @@ acl.isAllowed('editor', 'created-articles', 'like'); // false
 
 ## Documentation
 
-### Creating a new ACL
+### Create a new ACL
 
 ```js
 const acl = new Acl();
 ```
 
-By default you can use **string** or **number** types for **roles**, **resources** and **privileges**.
+By default, you can use **string** or **number** types as **roles**, **resources** and **privileges**.
 
 If you are using typescript then you can define your own types.
 
@@ -130,47 +130,47 @@ enum Privileges {Navigate, Add, Like}
 const acl = new Acl<Roles, Resources, Privileges>();
 ```
 
-### Adding roles
+### Add roles
 
 ```js
 acl.addRole('guest');
 ```
 
-Specifying a parent makes the role to inherit all the parent's privileges
+Add a parent as second parameter to inherit all the parent's privileges
 
 ```js
 acl.addRole('editor', 'authenticated');
 ```
 
-Using an array allows to add multiple roles at once, with or without parent
+Use an array to add multiple roles at once, with or without parent
 
 ```js
 acl.addRole(['guest', 'authenticated']);
 acl.addRole(['editor', 'publisher'], 'authenticated');
 ```
 
-### Adding resources
+### Add resources
 
 ```js
 acl.addResource('restricted-area');
 ```
 
-Specifying a parent, makes the resource to inherit all the parent's privileges
+Add a parent as second parameter to inherit all the parent's privileges
 
 ```js
 acl.addResource('created-articles', 'articles');
 ```
 
-Using an array allows to add multiple resources at once, with or without parent
+Use an array to add multiple resources at once, with or without parent
 
 ```js
 acl.addResource(['restricted-area', 'personal-area']);
 acl.addResource(['admin-area', 'articles'], 'restricted-area');
 ```
 
-### Allowing/denying privileges
+### Allow/deny privileges
 
-By default, all privileges are disallowed until not explicitly allowed.
+By default, all privileges are denied if not explicitly allowed.
 
 Allow/deny all privileges on all resources for all roles
 
@@ -235,51 +235,51 @@ acl.allow(['admin', 'publisher'], null, ['add', 'remove']);
 acl.deny(null, ['article', 'category'], ['add', 'remove']);
 ```
 
-### Querying privileges
+### Query privileges
 
-Check if all privileges are allowed on all resources for all roles
+Query all privileges on all resources for all roles
 
 ```js
 acl.isAllowed(null, null);
 ```
 
-Check if a privilege is allowed on all resources for all roles
+Query a privilege on all resources for all roles
 
 ```js
 acl.isAllowed(null, null, 'view');
 ```
 
-Check if all privileges are allowed on all resources for a role
+Query all privileges on all resources for a role
 
 ```js
 acl.isAllowed('admin', null);
 ```
 
-Check if a privilege is allowed on all resources for a role
+Query a privilege on all resources for a role
 
 ```js
 acl.isAllowed('admin', null, 'edit');
 ```
 
-Check if all privileges are allowed on a resource for all roles
+Query all privileges on a resource for all roles
 
 ```js
 acl.isAllowed(null, 'articles');
 ```
 
-Check if a privilege is allowed on a resource for all roles
+Query a privilege on a resource for all roles
 
 ```js
 acl.isAllowed(null, 'articles', 'view');
 ```
 
-Check if all privileges are allowed on a resource for a role
+Query all privileges on a resource for a role
 
 ```js
 acl.isAllowed('admin', 'admin-area');
 ```
 
-Check if a privilege is allowed on a resource for a role
+Query a privilege on a resource for a role
 
 ```js
 acl.isAllowed('admin', 'admin-area', 'navigate');
