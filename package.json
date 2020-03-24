@@ -1,7 +1,7 @@
 {
   "name": "@nicolabello/js-acl",
   "version": "1.1.1",
-  "description": "",
+  "description": "Provides a lightweight and flexible access control list (ACL) implementation for privileges management.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

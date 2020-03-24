@@ -65,10 +65,9 @@
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
   "exclude": [
-    ".idea",
-    ".github",
     "dist",
-    "*.*",
-    "**/*.test.*"
+    "*.config.js",
+    "**/*.test.*",
+    "**/*.spec.*"
   ]
 }
