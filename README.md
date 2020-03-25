@@ -22,8 +22,8 @@ yarn add @nicolabello/js-acl
 
 Using _import_ (ES6 way, e.g. **Angular**, **React**)
 
-```js
-import {Acl} from "@nicolabello/js-acl";
+```typescript
+import {Acl} from '@nicolabello/js-acl';
 ```
 
 Using _require_ (CommonJS way, e.g. **Node.js**)
@@ -40,7 +40,7 @@ Create a new ACL
 const acl = new Acl();
 ```
 
-Add the **roles** to match the following structure
+Add the roles to match the following structure
 
 ```
 guest
@@ -56,7 +56,7 @@ acl.addRole('editor', 'authenticated');
 acl.addRole('admin', 'authenticated');
 ```
 
-Add the **resources** to match the following structure
+Add the resources to match the following structure
 
 ```
 restricted-area
@@ -72,7 +72,7 @@ acl.addResource('articles', 'restricted-area');
 acl.addResource('created-articles', 'articles');
 ```
 
-Allow/deny **privileges**
+Allow/deny privileges
 
 ```js
 // Authenticated users can navigate to restricted area

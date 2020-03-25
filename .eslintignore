@@ -1,5 +1,11 @@
-.github
-.idea
-dist
+# Dependencies folder
 node_modules
-*.config.js
+
+# Anything starting with .
+.*
+
+# Configs
+*.config.*
+
+# Build output
+build

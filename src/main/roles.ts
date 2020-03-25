@@ -1,4 +1,3 @@
-import {Tree} from "./tree";
+import { Tree } from './tree';
 
-export class Roles<Role> extends Tree<Role> {
-}
+export class Roles<Role> extends Tree<Role> {}
